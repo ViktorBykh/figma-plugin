@@ -1,0 +1,32 @@
+{
+  "name": "figma-plugin",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build && npm run build:main",
+    "build:main": "esbuild src/code/index.ts --bundle --outfile=dist/code.js --target=es6",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "^3.7.3",
+    "@cntrl-pkg/domain": "^1.60.1",
+    "@figma/plugin-typings": "^1.100.2",
+    "blob": "^0.1.0",
+    "esbuild": "^0.24.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ulid": "^2.3.0",
+    "vite-plugin-singlefile": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}
