@@ -1,0 +1,17 @@
+{
+  "name": "figma-plugin",
+  "id": "1422166620262000413",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/index.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": [
+      "http://localhost:3001"
+    ],
+    "devAllowedDomains": [
+      "http://localhost:3001"
+    ],
+    "reasoning": "Local development and testing purposes."
+  }
+}
