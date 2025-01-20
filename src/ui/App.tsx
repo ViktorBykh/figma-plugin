@@ -7,7 +7,7 @@ export const App: React.FC = () => {
   const onCopy = () => {
     parent.postMessage(
       {
-        pluginMessage: { type: 'coping' },
+        pluginMessage: { type: 'copying' },
       },
       '*'
     );
@@ -16,7 +16,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     window.onmessage = async (event) => {
       const { type, payload } = event.data.pluginMessage;
-      if (type === 'coping-complete') {
+      if (type === 'copying-complete') {
         await handleCopy(payload);
       }
     };
