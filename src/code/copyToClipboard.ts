@@ -1,26 +1,36 @@
-/* eslint-disable no-console */
 import { extractBaseProperties } from './utils/extractors/extractBaseProperties';
 import { mapChildProperties } from './utils/mappers/mapChildProperties';
 
 export async function copyToClipboard() {
   const selection = figma.currentPage.selection;
-
   if (selection.length === 0) {
-    figma.notify('Please select a frame to export');
-    figma.ui.postMessage({ type: 'coping-error' });
+    figma.notify('Please select at least one frame to export');
+    const errorMessage = 'An error occurred while copying to clipboard.';
+    figma.ui.postMessage({ type: 'copying-error', message: errorMessage });
     return;
   }
 
-  const frame = selection[0] as FrameNode;
-  const frameData = {
-    ...extractBaseProperties(frame),
-    children: frame.children.map(mapChildProperties),
-  };
+  const copiedData = await Promise.all(
+    selection.map(async (node) => {
+      const baseData = await extractBaseProperties(node);
+      const isFrame = node.type === 'FRAME';
 
-  console.log('Copied data', frameData);
+      const isTopLevelFrame = isFrame && node.parent?.type === 'PAGE';
+      const childProperties
+        = isFrame
+          ? await Promise.all(node.children.map(mapChildProperties))
+          : {};
+
+      return {
+        ...baseData,
+        ...(isFrame ? { children: childProperties } : {}),
+        isTopLevelFrame,
+      };
+    })
+  );
 
   figma.ui.postMessage({
-    type: 'coping-complete',
-    payload: frameData,
+    type: 'copying-complete',
+    payload: copiedData,
   });
 }
