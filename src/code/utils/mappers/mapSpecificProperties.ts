@@ -1,7 +1,7 @@
 import { extractTextProperties } from '../extractors/extractTextProperties';
 import { mapChildProperties } from './mapChildProperties';
 
-export function mapSpecificProperties(child: SceneNode): any {
+export async function mapSpecificProperties(child: SceneNode): Promise<any> {
   switch (child.type) {
     case 'TEXT':
       return extractTextProperties(child as TextNode);
@@ -34,7 +34,7 @@ export function mapSpecificProperties(child: SceneNode): any {
         paddingTop: (child as FrameNode).paddingTop,
         paddingBottom: (child as FrameNode).paddingBottom,
         layoutGrids: (child as FrameNode).layoutGrids,
-        children: (child as FrameNode).children.map(mapChildProperties),
+        children: await Promise.all((child as FrameNode).children.map(mapChildProperties)),
       };
     case 'STAMP':
       return { author: (child as StampNode).getAuthorAsync() };

@@ -1,9 +1,9 @@
 import { extractBaseProperties } from '../extractors/extractBaseProperties';
 import { mapSpecificProperties } from './mapSpecificProperties';
 
-export function mapChildProperties(child: SceneNode): any {
+export async function mapChildProperties(child: SceneNode): Promise<any> {
   return {
-    ...extractBaseProperties(child),
-    ...mapSpecificProperties(child),
+    ...await extractBaseProperties(child),
+    ...await mapSpecificProperties(child),
   };
 }
