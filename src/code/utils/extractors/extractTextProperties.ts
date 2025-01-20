@@ -4,7 +4,13 @@ export function extractTextProperties(node: TextNode) {
     fontSize: node.fontSize,
     fontName: node.fontName,
     letterSpacing: node.letterSpacing !== figma.mixed ? node.letterSpacing.value : 0,
-    lineHeight: node.lineHeight !== figma.mixed && 'value' in node.lineHeight ? node.lineHeight.value : 1.5,
+    lineHeight: node.lineHeight !== figma.mixed && (node.lineHeight.unit === 'PERCENT')
+      ? (typeof node.lineHeight === 'object' && 'value' in node.lineHeight && typeof node.fontSize === 'number'
+          ? (node.lineHeight.value * node.fontSize) / 100
+          : node.fontSize)
+      : (typeof node.lineHeight === 'object' && 'value' in node.lineHeight
+          ? node.lineHeight.value
+          : node.fontSize),
     fontFamily: (node.fontName as FontName).family,
     fontStyle: (node.fontName as FontName).style,
     fontWeight: node.fontWeight,
